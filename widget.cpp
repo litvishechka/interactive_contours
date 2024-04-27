@@ -72,7 +72,6 @@ Widget::Widget(QWidget *parent)
         }
     });
 
-
     connect(create_contour, &QAction::toggled, this, [create_contour, delete_point, append_point, moving_point, delete_contour](bool checked) {
         if (checked) {
             delete_point->setChecked(false);
@@ -271,7 +270,7 @@ void Widget::mousePressEvent(QMouseEvent *event)
 
     if (m_blockMovingPointContours && event->buttons() == Qt::LeftButton) {
         for (int k = 0; k < contours_points.size(); ++k) {
-            if (k == m_activeContourIndex || contours_points.size() == 1) {
+            // if (k == m_activeContourIndex || contours_points.size() == 1) {
                 for (int i = 0; i < contours_points[k].size(); ++i) {
                     if(contours_points[k][i].x() - 8 < event->pos().x() && event->pos().x() < contours_points[k][i].x() + 8 &&
                         contours_points[k][i].y() - 8 < event->pos().y() && event->pos().y() < contours_points[k][i].y() + 8) {
@@ -280,9 +279,10 @@ void Widget::mousePressEvent(QMouseEvent *event)
                     }
                 }
 
-            }
+            // }
         }
     }
+
 
     if (m_blockDeleteContour && event->buttons() == Qt::LeftButton) {
         if (m_activeContourIndex >= 0 && m_activeContourIndex < contours_points.count()) {
@@ -294,8 +294,15 @@ void Widget::mousePressEvent(QMouseEvent *event)
             }
         } else {
             if (contours_points.count() == 1) {
-                contours_points.clear();
-                setActiveContour(-1); // Reset the active contour index
+                QPoint mousePos = event->pos(); // Получить позицию мыши
+                QPolygonF polygon(contours_points[0]); // Создать QPolygonF из списка точек
+                if (polygon.containsPoint(QPointF(mousePos), Qt::OddEvenFill)) {
+                    contours_points.clear();
+                    setActiveContour(-1); // Сбросить индекс активного контура
+                }
+                    setActiveContour(-1); // Сбросить индекс активного контура
+                // contours_points.clear();
+                // setActiveContour(-1); // Reset the active contour index
             }
             else {
                 QMessageBox msgBox;
@@ -492,7 +499,7 @@ void Widget::loadContoursFromFile() {
             QJsonDocument doc(QJsonDocument::fromJson(data));
             QJsonArray contourArray = doc.object()["contours"].toArray();
 
-            contours_points.clear();
+            // contours_points.clear();
             for (int i = 0; i < contourArray.size(); ++i) {
                 QList<QPointF> contour;
                 QJsonArray pointArray = contourArray[i].toArray();
