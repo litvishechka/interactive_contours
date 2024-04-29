@@ -10,6 +10,7 @@ editing, deleting a contour.
 should be presented in the form of modes of operation, and not as separate
 operations.
 4. Saving (it is important to make sure that you uncheck "create contour" before saving) and reading the results of work in files.
+
 An example of how the program works is shown in the video below.
 
 https://github.com/litvishechka/interactive_contours/assets/126517074/572afa76-8f54-4936-a6d2-a92ecdb03614
