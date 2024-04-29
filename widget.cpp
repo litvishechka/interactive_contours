@@ -288,21 +288,18 @@ void Widget::mousePressEvent(QMouseEvent *event)
         if (m_activeContourIndex >= 0 && m_activeContourIndex < contours_points.count()) {
             auto it = contours_points.begin() + m_activeContourIndex;
             if (m_blockOtherContours) {
-                it->clear(); // Clear the active contour
-                contours_points.erase(it); // Remove the active contour from the list
-                setActiveContour(-1); // Reset the active contour
+                it->clear();
+                contours_points.erase(it);
+                setActiveContour(-1);
             }
         } else {
             if (contours_points.count() == 1) {
-                QPoint mousePos = event->pos(); // Получить позицию мыши
-                QPolygonF polygon(contours_points[0]); // Создать QPolygonF из списка точек
+                QPoint mousePos = event->pos();
+                QPolygonF polygon(contours_points[0]);
                 if (polygon.containsPoint(QPointF(mousePos), Qt::OddEvenFill)) {
                     contours_points.clear();
-                    setActiveContour(-1); // Сбросить индекс активного контура
+                    setActiveContour(-1);
                 }
-                    setActiveContour(-1); // Сбросить индекс активного контура
-                // contours_points.clear();
-                // setActiveContour(-1); // Reset the active contour index
             }
             else {
                 QMessageBox msgBox;
